@@ -17,14 +17,9 @@ jobs:
         with:
           ref: ${{ github.ref }}
 
-      - name: 'Install dotnet 3.1'
-        uses: actions/setup-dotnet@v1.0.0
-        with:
-          version: 3.1.100
- 
       - name: 'Build and Test'
         working-directory: 'src'
         run: |
-          dotnet build
-          dotnet test
+          npm install
+          npm test --if-exists
            

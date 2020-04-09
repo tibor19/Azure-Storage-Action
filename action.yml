@@ -16,6 +16,16 @@ inputs:
   enabled-static-website: 
     description: 'Enabled static website'
     required: false
+  index-file: 
+    description: 'Index file for the static site'
+    required: false
+  error-file: 
+    description: '404 Error file for the static site'
+    required: false
+  remove-existing-files: 
+    description: 'If the existing files should be removed or not'
+    required: false
+
 runs:
   using: 'node12'
   main: 'index.js'

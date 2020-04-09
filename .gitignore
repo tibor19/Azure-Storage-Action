@@ -39,4 +39,5 @@ msbuild.wrn
 appsettings.Development.json
 *.pubxml
 launchSettings.json
+package-lock.json
 /src/Properties/launchSettings.json

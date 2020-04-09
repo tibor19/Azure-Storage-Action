@@ -31,10 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/checkout@v1
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.0.100'
-    - uses: lauchacarro/Azure-Storage-Action@master
+    - uses: tibor19/Azure-Storage-Action@master
       with:
         enabled-static-website: 'true'
         folder: 'MyFolder'

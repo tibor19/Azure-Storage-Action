@@ -1,23 +1,24 @@
 {
-  "name": "azure-storage-action",
+  "name": "azure-storage-node-action",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lauchacarro/Azure-Storage-Action.git"
+    "url": "git+https://github.com/tibor19/Azure-Storage-Action.git"
   },
-  "author": "Lautaro Carro",
-  "license": "ISC",
+  "author": "Tiberiu Covaci",
+  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/lauchacarro/Azure-Storage-Action/issues"
+    "url": "https://github.com/tibor19/Azure-Storage-Action/issues"
   },
-  "homepage": "https://github.com/lauchacarro/Azure-Storage-Action#readme",
+  "homepage": "https://github.com/tibor19/Azure-Storage-Action#readme",
   "dependencies": {
     "@actions/core": "^1.2.0",
-    "@actions/exec": "^1.0.2"
+    "@actions/exec": "^1.0.2",
+    "@azure/storage-blob": "^12.1.1"
   }
 }

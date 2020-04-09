@@ -21,7 +21,7 @@ jobs:
       run: dotnet publish --configuration Release -o app
       
     - name: Deploy to Azure Blob Storage
-      uses: lauchacarro/Azure-Storage-Action@master
+      uses: tibor19/Azure-Storage-Action@node-only
       with:
         enabled-static-website: 'true'
         folder: 'app/[Blazor Project Name]/dist' # example: 'app/MyBlazorSite/dist'
