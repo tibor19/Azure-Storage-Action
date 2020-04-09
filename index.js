@@ -53,8 +53,12 @@ const main = async () => {
         var props = await blobServiceClient.getProperties();
         props.cors = props.cors || [];
         props.staticWebsite.enabled = true;
-        props.staticWebsite.indexDocument = indexFile;
-        props.staticWebsite.errorDocument404Path = errorFile;
+        if(!!indexFile){
+            props.staticWebsite.indexDocument = indexFile;
+        }
+        if(!!errorFile){
+            props.staticWebsite.errorDocument404Path = errorFile;
+        }
         await blobServiceClient.setProperties(props);
     }
 
