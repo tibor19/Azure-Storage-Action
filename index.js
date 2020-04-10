@@ -10,7 +10,7 @@ const readdir = promisify(fs.readdir);
 const listFiles = async function* (dir){
     const files = await readdir(dir);
     for (const file of files){
-        const fileName = Path.join(dir, file);
+        const fileName = path.join(dir, file);
         if(fs.statSync(fileName).isDirectory()){
             yield *listFiles(fileName);
         }else{
@@ -20,45 +20,34 @@ const listFiles = async function* (dir){
 }
 
 const main = async () => {
+
     const connectionString = core.getInput('connection-string');
+    if (!connectionString) {
+        throw "Connection string must be specified!";
+    }
+
+    const enableStaticWebSite = core.getInput('enabled-static-website');
+    const containerName = (enableStaticWebSite) ? "$web" : core.getInput('blob-container-name') ;
+    if (!containerName) {
+        throw "Container name must be specified, or enableStaticWebSite set to true!";
+    }
+
     const folder = core.getInput('folder');
     const accessPolicy = core.getInput('public-access-policy');
-    const enableStaticWebSite = core.getInput('enabled-static-website');
+    const indexFile = core.getInput('index-file') || 'index.html';;
+    const errorFile = core.getInput('error-file') || 'index.html';
     const removeExistingFiles = core.getInput('remove-existing-files');
-
-    var containerName = core.getInput('blob-container-name');
-    var indexFile;
-    var errorFile;
-
-    if (!connectionString) {
-        core.setFailed("Connection string must be specified!");
-        throw "";
-    }
-
-    if (enableStaticWebSite) {
-        containerName = '$web';
-        indexFile = core.getInput('index-file') || 'index.html';
-        errorFile = core.getInput('error-file') || 'index.html';
-    }
-
-    if (!containerName) {
-        core.setFailed("Connection string must be specified!");
-        throw "";
-    }
 
     const blobServiceClient = await BlobServiceClient.fromConnectionString(connectionString);
 
     if (enableStaticWebSite) {
-
         var props = await blobServiceClient.getProperties();
+
         props.cors = props.cors || [];
         props.staticWebsite.enabled = true;
-        if(!!indexFile){
-            props.staticWebsite.indexDocument = indexFile;
-        }
-        if(!!errorFile){
-            props.staticWebsite.errorDocument404Path = errorFile;
-        }
+        props.staticWebsite.indexDocument = indexFile;
+        props.staticWebsite.errorDocument404Path = errorFile;
+
         await blobServiceClient.setProperties(props);
     }
 
@@ -79,10 +68,10 @@ const main = async () => {
     const rootFolder = path.resolve(folder);
 
     for await (const file of listFiles(rootFolder)) {
-        var blobName = Path.relative(rootFolder, file);
+        var blobName = path.relative(rootFolder, file);
         var blobClient = containerService.getBlockBlobClient(blobName);
         await blobClient.uploadFile(file);
-        console.log(Path.relative(rootFolder, file));
+        console.log(path.relative(rootFolder, file));
     }
 
 };
@@ -90,5 +79,6 @@ const main = async () => {
 main().catch(err => {
     console.error(err);
     console.error(err.stack);
+    core.setFailed(err);
     process.exit(-1);
 })
