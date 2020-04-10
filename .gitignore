@@ -33,11 +33,6 @@ msbuild.log
 msbuild.err
 msbuild.wrn
 
-# Visual Studio 2015
-.vs/
-
-appsettings.Development.json
 *.pubxml
-launchSettings.json
 package-lock.json
-/src/Properties/launchSettings.json
+node_modules/
