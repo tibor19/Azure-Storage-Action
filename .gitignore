@@ -34,5 +34,4 @@ msbuild.err
 msbuild.wrn
 
 *.pubxml
-package-lock.json
 node_modules/

@@ -2,13 +2,13 @@ const fs = require('fs');
 const path = require('path');
 const { promisify } = require('util');
 
-const core = require('@actions/core');
+const { getInput, setFailed } = require('@actions/core');
 const { BlobServiceClient } = require('@azure/storage-blob');
 
-const readdir = promisify(fs.readdir);
+const readDirAsync = promisify(fs.readdir);
 
 const listFiles = async function* (dir){
-    const files = await readdir(dir);
+    const files = await readDirAsync(dir);
     for (const file of files){
         const fileName = path.join(dir, file);
         if(fs.statSync(fileName).isDirectory()){
@@ -21,22 +21,22 @@ const listFiles = async function* (dir){
 
 const main = async () => {
 
-    const connectionString = core.getInput('connection-string');
+    const connectionString = getInput('connection-string');
     if (!connectionString) {
         throw "Connection string must be specified!";
     }
 
-    const enableStaticWebSite = core.getInput('enabled-static-website');
-    const containerName = (enableStaticWebSite) ? "$web" : core.getInput('blob-container-name') ;
+    const enableStaticWebSite = getInput('enabled-static-website');
+    const containerName = (enableStaticWebSite) ? "$web" : getInput('blob-container-name') ;
     if (!containerName) {
-        throw "Container name must be specified, or enableStaticWebSite set to true!";
+        throw "Either specify a container name, or set enableStaticWebSite to true!";
     }
 
-    const folder = core.getInput('folder');
-    const accessPolicy = core.getInput('public-access-policy');
-    const indexFile = core.getInput('index-file') || 'index.html';;
-    const errorFile = core.getInput('error-file') || 'index.html';
-    const removeExistingFiles = core.getInput('remove-existing-files');
+    const folder = getInput('folder');
+    const accessPolicy = getInput('public-access-policy');
+    const indexFile = getInput('index-file') || 'index.html';
+    const errorFile = getInput('error-file');
+    const removeExistingFiles = getInput('remove-existing-files');
 
     const blobServiceClient = await BlobServiceClient.fromConnectionString(connectionString);
 
@@ -61,7 +61,7 @@ const main = async () => {
 
     if(removeExistingFiles){
         for await (const blob of containerService.listBlobsFlat()){
-            containerService.deleteBlob(blob.name);
+            await containerService.deleteBlob(blob.name);
         }
     }
 
@@ -79,6 +79,6 @@ const main = async () => {
 main().catch(err => {
     console.error(err);
     console.error(err.stack);
-    core.setFailed(err);
+    setFailed(err);
     process.exit(-1);
 })

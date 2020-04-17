@@ -1,9 +1,10 @@
-# Azure Storage Action
+# Azure Static Website Action
 
+This action was inspired by  [`Azure Storage Action`](https://github.com/lauchacarro/Azure-Storage-Action). I re-wrote the whole thing using node.js
 
-# Deploy Files in Azure Blob Storage
+# Deploy Files to Azure Blob Storage
 
-With [`Azure Storage Action`](https://github.com/lauchacarro/Azure-Storage-Action), you can automate your workflow to deploy files to [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
+With [`Azure Static Website Action`](https://github.com/tibor19/static-website-deploy), you can automate your workflow to deploy files to [Azure Blob Storage](https://azure.microsoft.com/en-us/services/storage/blobs/)
 
 
 # End-to-End Sample Workflows
@@ -11,7 +12,6 @@ With [`Azure Storage Action`](https://github.com/lauchacarro/Azure-Storage-Actio
 ## Dependencies on other Github Actions
 
 * [Checkout](https://github.com/actions/checkout) Checkout your Git repository content into Github Actions agent.
-* [Setup DotNet](https://github.com/actions/setup-dotnet) Sets up a dotnet environment by optionally downloading and caching a version of dotnet by SDK version and adding to PATH .
   
 ## Create Azure Storage Account and deploy static website using GitHub Actions
 1. Follow the tutorial [Azure Storage Account](https://docs.microsoft.com/es-es/learn/modules/create-azure-storage-account/5-exercise-create-a-storage-account))
@@ -30,8 +30,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps: 
-    - uses: actions/checkout@v1
-    - uses: tibor19/Azure-Storage-Action@master
+    - uses: actions/checkout@v2
+    - uses: tibor19/static-website-deploy@v1
       with:
         enabled-static-website: 'true'
         folder: 'MyFolder'

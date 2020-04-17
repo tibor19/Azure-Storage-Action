@@ -3,11 +3,11 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps: 
-    - uses: actions/checkout@v1
-    - uses: actions/setup-dotnet@v1
-      with:
-        dotnet-version: '3.1.100'
-    - uses: lauchacarro/Azure-Storage-Action@master
+    - name: 'Checkout the code'
+      uses: actions/checkout@v2
+      
+    - name: 'Deploy to an Azure Storage container called cdn' 
+      uses: tibor19/static-website-deploy@v1
       with:
         folder: 'files' # All files and subfolders found in the specified folder will be uploaded.
         connection-string: ${{ secrets.CONNECTION_STRING }}

@@ -1,31 +1,35 @@
-name: 'Azure Storage Action'
-description: 'You can automate your workflow to deploy files to Azure Blob Storage Container without Azure Credentials'
+name: 'Azure Static Website'
+description: 'Deploy files to Azure Blob Storage Container using a connection string'
 inputs:
   connection-string: 
     description: 'Connection String of the Azure Storage Container'
     required: true
   folder: 
-    description: 'Folder what contains the files for upload to Storage Container'
+    description: 'Folder containing the files to be uploaded to the Storage Container'
     required: false
+    default: '.'
   blob-container-name: 
-    description: 'Name of Blob Container Storage'
+    description: 'Name of the Blob Container Storage'
     required: false
   public-access-policy: 
-    description: 'Access Policy to update in the Container'
+    description: 'Access Policy to update in the Container (BlobContainer | Blob | None). For private containers do not specity any value.'
     required: false
   enabled-static-website: 
     description: 'Enabled static website'
     required: false
   index-file: 
-    description: 'Index file for the static site'
+    description: 'Index file for the static website'
     required: false
   error-file: 
-    description: '404 Error file for the static site'
+    description: '404 Error file for the static website'
     required: false
   remove-existing-files: 
-    description: 'If the existing files should be removed or not'
+    description: 'If the existing files should be removed before uploading the new files'
     required: false
 
+branding:
+  icon: 'storage-accounts.svg'
+  color: blue
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'lib/main.js'
